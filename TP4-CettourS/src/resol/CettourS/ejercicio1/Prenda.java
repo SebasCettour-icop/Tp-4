@@ -1,25 +1,17 @@
 package resol.CettourS.ejercicio1;
 
 public class Prenda {
-    private String tipo;
-    private double precioBase;
-    private String talle;
+    String tipo;
+    double precio;
+    String talle;
 
-    public Prenda(String tipo, double precioBase, String talle) {
+    public Prenda(String tipo, double precio, String talle) {
         this.tipo = tipo;
-        this.precioBase = precioBase;
+        this.precio = precio;
         this.talle = talle;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public double getPrecioBase() {
-        return precioBase;
-    }
-
-    public String getTalle() {
-        return talle;
+    public String toString() {
+        return tipo + " - Talle: " + talle + " - $" + precio;
     }
 }

@@ -3,28 +3,19 @@ package resol.CettourS.ejercicio1;
 import java.util.ArrayList;
 
 public class Catalogo {
-    private ArrayList<Prenda> prendas;
+    private ArrayList<Prenda> prendas = new ArrayList<>();
 
-    public Catalogo() {
-        prendas = new ArrayList<>();
+    public void agregar(Prenda p) {
+        prendas.add(p);
     }
 
-    public void agregarPrenda(Prenda prenda) {
-        prendas.add(prenda);
+    public void mostrar() {
+        System.out.println("\n--- Catálogo ---");
+        for (int i = 0; i < prendas.size(); i++)
+            System.out.println((i + 1) + ". " + prendas.get(i));
     }
 
-    public void mostrarCatalogo() {
-        System.out.println("\n--- Catálogo de Ropa ---");
-        for (int i = 0; i < prendas.size(); i++) {
-            Prenda p = prendas.get(i);
-            System.out.println((i + 1) + ". Prenda: " + p.getTipo() + ", Talle: " + p.getTalle() + ", Precio: $" + p.getPrecioBase());
-        }
-    }
-
-    public Prenda seleccionarPrenda(int indice) {
-        if (indice >= 1 && indice <= prendas.size()) {
-            return prendas.get(indice - 1);
-        }
-        return null;
+    public Prenda seleccionar(int i) {
+        return (i >= 1 && i <= prendas.size()) ? prendas.get(i - 1) : null;
     }
 }

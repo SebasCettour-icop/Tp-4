@@ -3,8 +3,8 @@ package resol.CettourS.ejercicio2;
 import java.util.ArrayList;
 
 class Agenda {
-    private ArrayList<Contacto> contactos;
-    private int maxContactos;
+    private final ArrayList<Contacto> contactos;
+    private final int maxContactos;
 
     public Agenda() {
         this(10);
@@ -17,17 +17,13 @@ class Agenda {
 
     public void aniadirContacto(Contacto c) {
         if (agendaLlena()) {
-            System.out.println("La agenda está llena. No se puede añadir más contactos.");
-            return;
+            System.out.println("La agenda está llena.");
+        } else if (existeContacto(c)) {
+            System.out.println("Ya existe un contacto con ese número.");
+        } else {
+            contactos.add(c);
+            System.out.println("Contacto añadido.");
         }
-
-        if (existeContacto(c)) {
-            System.out.println("Ya existe un contacto con ese número de teléfono.");
-            return;
-        }
-
-        contactos.add(c);
-        System.out.println("Contacto añadido correctamente.");
     }
 
     public boolean existeContacto(Contacto c) {
@@ -36,36 +32,31 @@ class Agenda {
 
     public void listarContactos() {
         if (contactos.isEmpty()) {
-            System.out.println("La agenda está vacía.");
-            return;
-        }
-
-        System.out.println("--- LISTA DE CONTACTOS ---");
-        for (Contacto c : contactos) {
-            System.out.println(c);
+            System.out.println("Agenda vacía.");
+        } else {
+            System.out.println("--- CONTACTOS ---");
+            contactos.forEach(System.out::println);
         }
     }
 
     public void buscaContacto(String nombre) {
-        boolean encontrado = false;
-        for (Contacto c : contactos) {
-            if (c.getNombre().equalsIgnoreCase(nombre)) {
-                System.out.println("Teléfono de " + nombre + ": " + c.getTelefono());
-                encontrado = true;
-                break;
-            }
-        }
+        Contacto encontrado = contactos.stream()
+                .filter(c -> c.getNombre().equalsIgnoreCase(nombre))
+                .findFirst()
+                .orElse(null);
 
-        if (!encontrado) {
-            System.out.println("No se encontró ningún contacto con ese nombre.");
+        if (encontrado != null) {
+            System.out.println("Teléfono de " + nombre + ": " + encontrado.getTelefono());
+        } else {
+            System.out.println("No se encontró el contacto.");
         }
     }
 
     public void eliminarContacto(Contacto c) {
         if (contactos.remove(c)) {
-            System.out.println("Contacto eliminado correctamente.");
+            System.out.println("Contacto eliminado.");
         } else {
-            System.out.println("No se encontró el contacto para eliminar.");
+            System.out.println("No se encontró el contacto.");
         }
     }
 

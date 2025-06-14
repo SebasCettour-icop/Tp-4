@@ -3,88 +3,63 @@ package resol.CettourS.ejercicio2;
 import java.util.Scanner;
 
 public class Ejercicio2 {
-    public static void ejecutar() {
-        {
-            Scanner scanner = new Scanner(System.in);
-            Agenda agenda;
+    public static void ejecutar(Scanner sc) {
+        Agenda agenda;
 
-            System.out.println("¿Desea crear una agenda con tamaño personalizado? (s/n)");
-            String respuesta = scanner.nextLine();
+        System.out.print("¿Crear agenda personalizada? (s/n): ");
+        String respuesta = sc.nextLine();
+        agenda = respuesta.equalsIgnoreCase("s")
+                ? new Agenda(pedirEntero(sc, "Tamaño máximo de la agenda: "))
+                : new Agenda();
 
-            if (respuesta.equalsIgnoreCase("s")) {
-                System.out.println("Introduzca el tamaño máximo de la agenda:");
-                int tamaño = Integer.parseInt(scanner.nextLine());
-                agenda = new Agenda(tamaño);
-            } else {
-                agenda = new Agenda();
-            }
+        int opcion;
+        do {
+            mostrarMenu();
+            opcion = pedirEntero(sc, "Opción: ");
 
-            int opcion;
-            do {
-                System.out.println("\n--- MENÚ AGENDA TELEFÓNICA ---");
-                System.out.println("1. Añadir contacto");
-                System.out.println("2. Buscar contacto por nombre");
-                System.out.println("3. Eliminar contacto");
-                System.out.println("4. Listar todos los contactos");
-                System.out.println("5. Ver si la agenda está llena");
-                System.out.println("6. Espacio libre en la agenda");
-                System.out.println("0. Salir");
-                System.out.print("Seleccione una opción: ");
-
-                opcion = Integer.parseInt(scanner.nextLine());
-
-                switch (opcion) {
-                    case 1:
-                        System.out.print("Introduzca el nombre del contacto: ");
-                        String nombre = scanner.nextLine();
-                        System.out.print("Introduzca el teléfono del contacto: ");
-                        String telefono = scanner.nextLine();
-                        Contacto nuevoContacto = new Contacto(nombre, telefono);
-                        agenda.aniadirContacto(nuevoContacto);
-                        break;
-
-                    case 2:
-                        System.out.print("Introduzca el nombre a buscar: ");
-                        String nombreBuscar = scanner.nextLine();
-                        agenda.buscaContacto(nombreBuscar);
-                        break;
-
-                    case 3:
-                        System.out.print("Introduzca el nombre del contacto a eliminar: ");
-                        String nombreEliminar = scanner.nextLine();
-                        System.out.print("Introduzca el teléfono del contacto a eliminar: ");
-                        String telefonoEliminar = scanner.nextLine();
-                        Contacto contactoEliminar = new Contacto(nombreEliminar, telefonoEliminar);
-                        agenda.eliminarContacto(contactoEliminar);
-                        break;
-
-                    case 4:
-                        agenda.listarContactos();
-                        break;
-
-                    case 5:
-                        if (agenda.agendaLlena()) {
-                            System.out.println("La agenda está llena.");
-                        } else {
-                            System.out.println("La agenda no está llena.");
-                        }
-                        break;
-
-                    case 6:
-                        System.out.println("Espacio libre en la agenda: " + agenda.espacioLibre());
-                        break;
-
-                    case 0:
-                        System.out.println("Saliendo...");
-                        break;
-
-                    default:
-                        System.out.println("Opción no válida. Intente nuevamente.");
+            switch (opcion) {
+                case 1 -> {
+                    String nombre = leerTexto(sc, "Nombre del contacto: ");
+                    String telefono = leerTexto(sc, "Teléfono del contacto: ");
+                    agenda.aniadirContacto(new Contacto(nombre, telefono));
                 }
+                case 2 -> agenda.buscaContacto(leerTexto(sc, "Nombre a buscar: "));
+                case 3 -> {
+                    String nombre = leerTexto(sc, "Nombre del contacto a eliminar: ");
+                    String telefono = leerTexto(sc, "Teléfono del contacto: ");
+                    agenda.eliminarContacto(new Contacto(nombre, telefono));
+                }
+                case 4 -> agenda.listarContactos();
+                case 5 -> System.out.println(agenda.agendaLlena()
+                        ? "La agenda está llena."
+                        : "Aún hay espacio disponible.");
+                case 6 -> System.out.println("Espacios libres: " + agenda.espacioLibre());
+                case 0 -> System.out.println("Saliendo...");
+                default -> System.out.println("Opción inválida.");
+            }
+        } while (opcion != 0);
 
-            } while (opcion != 0);
+    }
 
-            scanner.close();
-        }
+    private static void mostrarMenu() {
+        System.out.println("""
+                \n--- MENÚ AGENDA TELEFÓNICA ---
+                1. Añadir contacto
+                2. Buscar contacto por nombre
+                3. Eliminar contacto
+                4. Listar todos los contactos
+                5. Ver si la agenda está llena
+                6. Espacio libre en la agenda
+                0. Salir""");
+    }
+
+    private static int pedirEntero(Scanner sc, String mensaje) {
+        System.out.print(mensaje);
+        return Integer.parseInt(sc.nextLine());
+    }
+
+    private static String leerTexto(Scanner sc, String mensaje) {
+        System.out.print(mensaje);
+        return sc.nextLine();
     }
 }

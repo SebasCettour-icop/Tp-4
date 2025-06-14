@@ -1,8 +1,8 @@
 package resol.CettourS;
 
+import java.util.Scanner;
 import resol.CettourS.ejercicio1.Ejercicio1;
 import resol.CettourS.ejercicio2.Ejercicio2;
-import java.util.Scanner;
 
 public class Principal {
     public static void main(String[] args) {
@@ -16,26 +16,19 @@ public class Principal {
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
-            if (scanner.hasNextInt()) {
-                opcion = scanner.nextInt();
-            } else {
+            String entrada = scanner.nextLine();
+            try {
+                opcion = Integer.parseInt(entrada);
+            } catch (NumberFormatException e) {
                 System.out.println("Entrada no válida. Por favor, ingrese un número.");
-                scanner.next();
-                opcion = -1; //evita bucle infinito
+                opcion = -1;
             }
 
             switch (opcion) {
-                case 1:
-                    Ejercicio1.ejecutar();
-                    break;
-                case 2:
-                    Ejercicio2.ejecutar();
-                    break;
-                case 0:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
+                case 1 -> Ejercicio1.ejecutar(scanner);
+                case 2 -> Ejercicio2.ejecutar(scanner);
+                case 0 -> System.out.println("Saliendo...");
+                default -> System.out.println("Opción no válida.");
             }
         } while (opcion != 0);
 

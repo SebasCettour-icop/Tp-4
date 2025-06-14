@@ -1,8 +1,10 @@
 package resol.CettourS.ejercicio2;
 
+import java.util.Objects;
+
 class Contacto {
-    private String nombre;
-    private String telefono;
+    private final String nombre;
+    private final String telefono;
 
     public Contacto(String nombre, String telefono) {
         this.nombre = nombre;
@@ -17,11 +19,14 @@ class Contacto {
         return telefono;
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Contacto contacto = (Contacto) obj;
-        return telefono.equals(contacto.telefono);
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Contacto c)) return false;
+        return telefono.equals(c.telefono);
+    }
+
+    public int hashCode() {
+        return Objects.hash(telefono);
     }
 
     public String toString() {
